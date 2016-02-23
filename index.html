@@ -1,0 +1,29 @@
+<!doctype html>
+<html ng-app="phonecatApp">
+<head>
+</head>
+<body ng-controller="PhoneListCtrl">
+	<div class='container'>
+		<div>
+			<form ng-submit='encrypt(data)'> 
+				<div class="form-group">
+					<label for="encode">Encoding Password</label>
+					<input type="password" class="form-control" id="encode" placeholder="Encoding Password" ng-model='data.string'>
+				</div>
+
+				<div class="form-group">
+					<label for="encode">Encoded Password</label>
+					<input type="text" class="form-control" id="encoded" placeholder="{{ key }}">
+				</div>
+
+				<button type="submit" class="btn btn-default" >Submit</button>
+			</form>	
+		</div>
+	</div>
+
+	<script src="bower_components/angular/angular.js"></script>
+	<link  rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.min.css">
+	<script src="bower_components/angular-ui-router/release/angular-ui-router.min.js"></script>
+	<script src="inject.js"></script>
+</body>
+</html>
