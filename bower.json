@@ -6,5 +6,34 @@
     "bootstrap": "^3.3.6",
     "angular-ui-router": "^0.2.18"
   },
-  "private": true
+  "homepage": "https://github.com/nghiattran/encoding",
+  "authors": [
+    "NghiaTTran <nghiattran3@gmail.com>"
+  ],
+  "description": "",
+  "main": "./app/index.html",
+  "moduleType": [
+    "node"
+  ],
+  "overrides": {
+    "bootstrap": {
+      "main": [
+        "dist/css/bootstrap.css",
+        "dist/fonts/glyphicons-halflings-regular.eot",
+        "dist/fonts/glyphicons-halflings-regular.svg",
+        "dist/fonts/glyphicons-halflings-regular.ttf",
+        "dist/fonts/glyphicons-halflings-regular.woff",
+        "dist/fonts/glyphicons-halflings-regular.woff2"
+      ]
+    }
+  },
+  "license": "MIT",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
 }

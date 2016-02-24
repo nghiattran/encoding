@@ -1,0 +1,29 @@
+{
+  "name": "encoding",
+  "version": "1.0.0",
+  "description": "",
+  "main": "main.js",
+  "dependencies": {},
+  "devDependencies": {
+    "browser-sync": "^2.11.1",
+    "browserify": "^13.0.0",
+    "gulp": "^3.9.1",
+    "uglify": "^0.1.5",
+    "vinyl-source-stream": "^1.1.0",
+    "webpack-stream": "^3.1.0",
+    "wiredep": "^3.0.0"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nghiattran/encoding.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/nghiattran/encoding/issues"
+  },
+  "homepage": "https://github.com/nghiattran/encoding#readme"
+}
