@@ -14,25 +14,47 @@
         <div>
           <div class="option-box">
             <label>Type</label>
-            <select ng-model="data.type" class="form-control" ng-init="data.type = types[0]" required>
-              <option value="{{type}}" ng-repeat="type in types">{{type}}</option>
+            <select ng-model="data.type" class="form-control" ng-init="data.type = 'hash'" required>
+              <option value="{{type}}" ng-repeat="(type, value) in algorithms">{{type}}</option>
             </select>
           </div>
-          <div ng-if="data.type === 'hash'">
+          <div>
             <div class="option-box">
               <label>Algorithm</label>
-              <select ng-model="data.hashAlg" class="form-control" ng-init="data.hashAlg = hashTypes[0]" required>
-                <option value="{{hash}}" ng-repeat="hash in hashTypes">{{hash}}</option>
+              <select ng-model="data.algorithm" class="form-control" ng-init="data.algorithm = algorithms[data.type][0]" required>
+                <option value="{{algorithm}}" ng-repeat="algorithm in algorithms[data.type]">{{algorithm}}</option>
               </select>
             </div>
 
-        
-            <div class="option-box">
+            <div class="option-box" ng-if="data.type !== 'hash'">
+              <label>Key</label>
+              <input type="text" class="form-control" placeholder="A key" ng-model="data.key" required>
+            </div>
+
+            <div class="option-box" ng-if="data.type">
               <label>Encoding</label>
               <select ng-model="data.digest" class="form-control" ng-init="data.digest = encodingTypes[0]" required>
                 <option value="{{encoding}}" ng-repeat="encoding in encodingTypes">{{encoding}}</option>
               </select>
             </div>
+
+            <div ng-if="data.type === 'pbkdf2'">
+              <div class="option-box">
+                <label>Salt</label>
+                <input type="text" class="form-control" placeholder="A salt" ng-model="data.salt" required>
+              </div>
+
+              <div class="option-box">
+                <label>Key Length</label>
+                <input type="number" class="form-control" placeholder="A number" ng-model="data.keylen" required>
+              </div>
+
+              <div class="option-box">
+                <label>Iteration</label>
+                <input type="number" class="form-control" placeholder="A number" ng-model="data.iter" required>
+              </div>
+            </div>
+
           </div>
         </div>
 
@@ -46,11 +68,14 @@
 
           <div class="form-group">
             <label>Encoded Password</label>
-            <textarea class="form-control" rows="2" readonly>{{ key }}</textarea>
+            <textarea class="form-control" rows="3" readonly>{{ encoded }}</textarea>
           </div>
         </div>
 
-        <button type="submit" class="btn btn-default">Submit</button>
+        <div>
+          <i class='fa fa-spinner fa-spin' ng-show="loading === true"></i>
+          <button type="submit" class="btn btn-default btn-primary">Submit</button>
+        </div>
       </form>  
     </div>
   </div>
