@@ -1,0 +1,69 @@
+<div class="main-box">
+  <form ng-submit="cipher.encrypt(data)"> 
+    <div>
+      <div class="option-box">
+        <label>Type</label>
+        <select ng-model="data.type" class="form-control" ng-init="data.type = 'hash'" required>
+          <option value="{{type}}" ng-repeat="(type, value) in cipher.algorithms">{{type}}</option>
+        </select>
+      </div>
+      <div>
+        <div class="option-box">
+          <label>Algorithm</label>
+          <select ng-model="data.algorithm" class="form-control" ng-init="data.algorithm = cipher.algorithms[data.type][0]" required>
+            <option value="{{algorithm}}" ng-repeat="algorithm in cipher.algorithms[data.type]">{{algorithm}}</option>
+          </select>
+        </div>
+
+        <div class="option-box" ng-if="data.type !== 'hash'">
+          <label>Key</label>
+          <input type="text" class="form-control" placeholder="A key" ng-model="data.key" required>
+        </div>
+
+        <div class="option-box" ng-if="data.type">
+          <label>Encoding</label>
+          <select ng-model="data.digest" class="form-control" ng-init="data.digest = cipher.encodingTypes[0]" required>
+            <option value="{{encoding}}" ng-repeat="encoding in cipher.encodingTypes">{{encoding}}</option>
+          </select>
+        </div>
+
+        <div ng-if="data.type === 'pbkdf2'">
+          <div class="option-box">
+            <label>Salt</label>
+            <input type="text" class="form-control" placeholder="A salt" ng-model="data.salt" required>
+          </div>
+
+          <div class="option-box">
+            <label>Key Length</label>
+            <input type="number" class="form-control" placeholder="A number" ng-model="data.keylen" required>
+          </div>
+
+          <div class="option-box">
+            <label>Iteration</label>
+            <input type="number" class="form-control" placeholder="A number" ng-model="data.iter" required>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <div class="insert-box">
+      <div class="form-group">
+        <label>Encoding Password</label>
+        <input type="text" class="form-control" id="encode" placeholder="Encoding Password" ng-model="data.string" required>
+      </div>
+    
+
+
+      <div class="form-group">
+        <label>Encoded Password</label>
+        <textarea class="form-control" rows="3" readonly>{{ cipher.encoded }}</textarea>
+      </div>
+    </div>
+
+    <div>
+      <i class='fa fa-spinner fa-spin' ng-show="loading === true"></i>
+      <button type="submit" class="btn btn-default btn-primary">Submit</button>
+    </div>
+  </form>  
+</div>

@@ -1,65 +1,65 @@
 'use strict';
+var crypto = require('../crypto');
 
-var crypto = require('crypto');
+module.exports = class controler {
+  constructor() {
+    var hashAlgorithms = this.getHashes();
+    var cipherAlgorithms = this.getCiphers();
 
-angular.module('phonecatApp', []).controller('PhoneListCtrl', function ($scope) {
+    this.encodingTypes = [
+      'hex',
+      'base64'];
 
-  var hashAlgorithms = getHashes();
-
-  var cipherAlgorithms = getCiphers();
-
-  $scope.encodingTypes = [
-    'hex',
-    'base64'];
-
-  $scope.algorithms = {
-    hash: hashAlgorithms,
-    cipher: cipherAlgorithms,
-    decipher: cipherAlgorithms,
-    pbkdf2: hashAlgorithms
-  }
-
-	$scope.encrypt = function (data) {
-    console.log(data);
-    if (data.type === 'hash') {
-      hash(data);
-    } else if (data.type === 'cipher') {
-      cipher(data);
-    } else if (data.type === 'decipher') {
-      decipher(data);
-    }  else if (data.type === 'pbkdf2') {
-      pbkdf2(data);
+    this.algorithms = {
+      hash: hashAlgorithms,
+      cipher: cipherAlgorithms,
+      decipher: cipherAlgorithms,
+      pbkdf2: hashAlgorithms
     }
-	}
-
-  function hash (data) {
-    $scope.encoded = crypto.createHash(data.algorithm).update(data.string).digest(data.digest);
   }
 
-  function cipher (data) {
+  encrypt (data) {
+    if (data.type === 'hash') {
+      this.hash(data);
+    } else if (data.type === 'cipher') {
+      this.cipher(data);
+    } else if (data.type === 'decipher') {
+      this.decipher(data);
+    }  else if (data.type === 'pbkdf2') {
+      this.pbkdf2(data);
+    }
+  }
+
+  hash (data) {
+    this.encoded = crypto.createHash(data.algorithm).update(data.string).digest(data.digest);
+  }
+
+  cipher (data) {
     var cipher = crypto.createCipher(data.algorithm, data.key);
-    $scope.encoded = cipher.update(data.string, 'utf8', data.digest);
-    $scope.encoded += cipher.final('hex');
+    this.encoded = cipher.update(data.string, 'utf8', data.digest);
+    this.encoded += cipher.final('hex');
   }
 
-  function decipher (data) {
+  decipher (data) {
     var decipher = crypto.createDecipher(data.algorithm, data.key);
-    $scope.encoded = decipher.update(data.string, data.digest, 'utf8');
-    $scope.encoded += decipher.final('utf8');
+    this.encoded = decipher.update(data.string, data.digest, 'utf8');
+    this.encoded += decipher.final('utf8');
   }
 
-  function pbkdf2 (data) {
-    const crypto = require('crypto');
-    $scope.loading = true;
+  pbkdf2 (data) {
+    this.loading = true;
     crypto.pbkdf2(data.key, data.salt, data.iter, data.keylen, data.algorithm, (err, key) => {
-      $scope.loading = false;
+      this.loading = false;
       if (err) throw err;
-      $scope.encoded = key.toString(data.digest);
+      this.encoded = key.toString(data.digest);
     });
   }
 
 
-  function getHashes () {
+  /**
+   * Get all hash algorithms supported by browser
+   */
+  getHashes () {
     var hashAlgorithms = crypto.getHashes();
     var validHashes = [];
     for (var i = 0; i < hashAlgorithms.length; i++) {
@@ -73,7 +73,10 @@ angular.module('phonecatApp', []).controller('PhoneListCtrl', function ($scope) 
     return validHashes;
   }
 
-  function getCiphers () {
+  /**
+   * Get all cipher algorithms supported by browser
+   */
+  getCiphers () {
     var cipherAlgorithms = crypto.getCiphers();
     var validCiphers = [];
     for (var i = 0; i < cipherAlgorithms.length; i++) {
@@ -86,4 +89,4 @@ angular.module('phonecatApp', []).controller('PhoneListCtrl', function ($scope) 
     };
     return validCiphers;
   }
-});
+}
