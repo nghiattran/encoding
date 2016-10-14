@@ -62,7 +62,6 @@ angular.module('phonecatApp', []).controller('PhoneListCtrl', function ($scope) 
 
   function pbkdf2 (data) {
     console.log(data);
-    const crypto = require('crypto');
     $scope.loading = true;
     var start = performance.now();
     crypto.pbkdf2(data.digest, data.salt, data.iter, data.keylen / 2, data.algorithm, (err, key) => {
