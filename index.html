@@ -5,6 +5,7 @@
   <!-- endbower -->
   <!-- bower:css -->
   <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.css" />
+  <link rel="stylesheet" type="text/css" href="bower_components/components-font-awesome/css/font-awesome.min.css">
   <!-- endbower -->
 </head>
 <body ng-controller="PhoneListCtrl">
@@ -26,7 +27,7 @@
               </select>
             </div>
 
-            <div class="option-box" ng-if="data.type !== 'hash'">
+            <div class="option-box" ng-if="data.type == 'cipher' || data.type == 'decipher'">
               <label>Key</label>
               <input type="text" class="form-control" placeholder="A key" ng-model="data.key" required>
             </div>
@@ -60,21 +61,20 @@
 
         <div class="insert-box">
           <div class="form-group">
-            <label>Encoding Password</label>
-            <input type="text" class="form-control" id="encode" placeholder="Encoding Password" ng-model="data.string" required>
+            <label>Encoding message</label>
+            <input type="text" class="form-control" id="encode" placeholder="Encoding message" ng-model="data.string" required>
           </div>
         
 
 
           <div class="form-group">
-            <label>Encoded Password</label>
+            <label>Encoded message</label> <label ng-show="time">({{time}} ms)</label>
             <textarea class="form-control" rows="3" readonly>{{ encoded }}</textarea>
           </div>
         </div>
 
         <div>
-          <i class='fa fa-spinner fa-spin' ng-show="loading === true"></i>
-          <button type="submit" class="btn btn-default btn-primary">Submit</button>
+          <button type="submit" class="btn btn-default btn-primary"><i class='fa fa-spinner fa-spin' ng-show="loading === true"></i> Submit</button>
         </div>
       </form>  
     </div>

@@ -3,6 +3,8 @@
 var crypto = require('crypto');
 
 angular.module('phonecatApp', []).controller('PhoneListCtrl', function ($scope) {
+  $scope.isProcessing = false;
+  $scope.time = undefined;
 
   var hashAlgorithms = getHashes();
 
@@ -21,6 +23,7 @@ angular.module('phonecatApp', []).controller('PhoneListCtrl', function ($scope) 
 
 	$scope.encrypt = function (data) {
     console.log(data);
+    $scope.time = undefined;
     if (data.type === 'hash') {
       hash(data);
     } else if (data.type === 'cipher') {
@@ -33,31 +36,48 @@ angular.module('phonecatApp', []).controller('PhoneListCtrl', function ($scope) 
 	}
 
   function hash (data) {
+    var start = performance.now();
     $scope.encoded = crypto.createHash(data.algorithm).update(data.string).digest(data.digest);
+    var end = performance.now();
+    $scope.time = end - start;
   }
 
   function cipher (data) {
+    var start = performance.now();
     var cipher = crypto.createCipher(data.algorithm, data.key);
     $scope.encoded = cipher.update(data.string, 'utf8', data.digest);
     $scope.encoded += cipher.final('hex');
+    var end = performance.now();
+    $scope.time = end - start;
   }
 
   function decipher (data) {
+    var start = performance.now();
     var decipher = crypto.createDecipher(data.algorithm, data.key);
     $scope.encoded = decipher.update(data.string, data.digest, 'utf8');
     $scope.encoded += decipher.final('utf8');
+    var end = performance.now();
+    $scope.time = end - start;
   }
 
   function pbkdf2 (data) {
+    console.log(data);
     const crypto = require('crypto');
     $scope.loading = true;
-    crypto.pbkdf2(data.key, data.salt, data.iter, data.keylen, data.algorithm, (err, key) => {
+    var start = performance.now();
+    crypto.pbkdf2(data.digest, data.salt, data.iter, data.keylen / 2, data.algorithm, (err, key) => {
       $scope.loading = false;
       if (err) throw err;
       $scope.encoded = key.toString(data.digest);
+      var end = performance.now();
+      $scope.time = end - start;
+      $scope.$apply();
     });
   }
 
+  function setProcessing(value) {
+    $scope.isProcessing = value;
+  }
 
   function getHashes () {
     var hashAlgorithms = crypto.getHashes();
